@@ -1,0 +1,25 @@
+!!! Mobile
+%html
+  %head
+    %title= title
+    %link(rel="stylesheet" href="http://yui.yahooapis.com/2.8.0r4/build/reset/reset-min.css")
+    %link(rel="stylesheet" href="css/styles.css")
+    %link(rel="shortcut icon" href="favicon.ico?")
+  %body
+    #wrapper
+      #header
+        %h1= title
+ 
+      #nav
+        %ol
+          %a(href="dashboard")
+            %li Dashboard
+          %a(href="calendar")
+            %li Calendar
+      
+      #content
+        =yield
+ 
+      #footer
+        %p
+          _

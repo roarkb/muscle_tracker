@@ -21,10 +21,11 @@ EXERCISES = %w[
 START_DATE = Date.new(2014, 12, 12)
 END_DATE = Date.today 
 TITLE = "Muscle Tracker"
+DATABASE_NAME = "muscle"
 
 class MuscleTrackerApp < Sinatra::Base
-  def pretty_date(date) # => Thu Jan 01 2015
-    date.strftime("%a %b %d %Y")
+  def pretty_date(date) # => thu jan 01 2015
+    date.strftime("%a %b %d %y")
   end
 
   # this may not be needed
@@ -66,9 +67,9 @@ class MuscleTrackerApp < Sinatra::Base
   end
   
   before do
-    db = YAML::DBM.open("muscle")
-    db_append_latest_dates(db)
-    db.close
+    #db = YAML::DBM.open(DATABASE_NAME)
+    #db_append_latest_dates(db)
+    #db.close
   end
 
   get '/' do
@@ -83,3 +84,5 @@ class MuscleTrackerApp < Sinatra::Base
     haml :calendar, :format => :xhtml
   end
 end
+
+MuscleTrackerApp.run!

@@ -1,9 +1,9 @@
 muscle_tracker
 ==============
 
-start with "rackup"
+start with "./muscle_tracker.rb"
 muscle tracker live at:
-http://localhost:9292/dashboard
+http://localhost:4567/dashboard
 
 good Sinatra + Haml tutorial:
 http://code.tutsplus.com/tutorials/an-introduction-to-haml-and-sinatra--net-14858

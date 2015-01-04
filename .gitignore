@@ -3,3 +3,4 @@
 *.db
 Gemfile.lock
 test.rb
+test*.rb

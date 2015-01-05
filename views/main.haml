@@ -1,4 +1,5 @@
 #dashboard
+  /%form{:action => "/form", :method => "post"}
   %table
     %th
       %input(type="reset" value="clear")
@@ -16,6 +17,14 @@
         %td= e.capitalize
         %td
         %td
+%br
+
+%form(action="/muscle_tracker" method="post")
+  %label(for="") How are you feeling today?
+  %input(type="checkbox" name="cb[one]" id ="one") one
+  %input(type="checkbox" name="cb[two]" id ="two") two
+  %input(type="checkbox" name="cb[three]" id ="three") three
+  %input(type="submit" value="Submit!")
 %br
 
 #calendar

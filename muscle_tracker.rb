@@ -24,6 +24,10 @@ def date_to_datestamp(date)
 end
 
 get '/' do
+  redirect to('/muscle_tracker')
+end
+
+get "/muscle_tracker" do
   DB.append_latest_dates
   
   events = []
@@ -32,4 +36,11 @@ get '/' do
   end
   
   haml :main, :format => :xhtml, :locals => { :events => events }
+end
+
+post '/muscle_tracker' do
+  cb = params[:cb]
+  p cb.keys
+  #DB.update_value_array("2015-01-05", cb)
+  redirect to('/muscle_tracker')
 end

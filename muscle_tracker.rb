@@ -8,18 +8,7 @@ require 'date'
 
 require './database'
 
-EXERCISES = %w[
-  chest
-  back
-  abs
-  shoulders
-  deltoids
-  biceps
-  triceps
-  legs
-  run
-]
-
+EXERCISES = %w[ chest back abs shoulders deltoids biceps triceps legs cardio ]
 START_DATE = Date.new(2014, 12, 12)
 END_DATE = Date.today 
 TITLE = "Muscle Tracker"

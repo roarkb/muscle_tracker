@@ -1,19 +1,23 @@
 #!/usr/bin/env ruby
 
 class Database
+  def initialize(database_name)
+    @database_name = database_name
+  end
+
+  private
   # wrapper method for all db opperations
   def query
-    db = YAML::DBM.open(DATABASE_NAME)
+    db = YAML::DBM.open(@database_name)
     yield(db)
     db.close
   end
 
+  public
   # select all from db
   def select_all
     query do |db|
-      all = []
-      db.each { |k,v| all.push("#{k} => #{v}") }
-      all.sort.each { |e| puts e }
+      return db.to_hash.sort # returns nested array if you use sort
     end
   end
 

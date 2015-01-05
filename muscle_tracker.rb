@@ -12,7 +12,7 @@ EXERCISES = %w[ chest back abs shoulders deltoids biceps triceps legs cardio ]
 START_DATE = Date.new(2014, 12, 12)
 END_DATE = Date.today 
 TITLE = "Muscle Tracker"
-DATABASE_NAME = "muscle"
+DB = Database.new("muscle")
 
 def pretty_date(date) # => thu jan 01 2015
   date.strftime("%a %b %d %y")
@@ -25,8 +25,7 @@ def date_to_datestamp(date)
 end
 
 before do
-  db = Database.new
-  db.append_latest_dates
+  DB.append_latest_dates
 end
 
 get '/' do
@@ -38,5 +37,5 @@ get '/dashboard' do
 end
 
 get '/calendar' do
-  haml :calendar, :format => :xhtml
+  haml :calendar, :format => :xhtml, :locals => { :all_dates => DB.select_all }
 end

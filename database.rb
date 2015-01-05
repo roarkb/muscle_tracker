@@ -14,11 +14,9 @@ class Database
   end
 
   public
-  # select all from db
+  # select all from db, returns hash
   def select_all
-    query do |db|
-      return db.to_hash.sort # returns nested array if you use sort
-    end
+    query { |db| return db.to_hash }
   end
 
   def append_latest_dates

@@ -1,1 +1,10 @@
-%h1= all_dates
+#calendar
+  %table
+    - events.each do |e|
+      %tr
+        %td
+          %h2= e[0]
+        %td
+          %p= e[1]
+        %td
+          %input(type="submit" value="edit")

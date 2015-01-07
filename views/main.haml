@@ -1,39 +1,35 @@
-#dashboard
-  /%form{:action => "/form", :method => "post"}
-  %table
-    %th
-      %input(type="reset" value="clear")
-    %th
-      %h2 Exercise
-    %th
-      %h2 Last Day Worked
-    %th
-      %h2 Days Since Worked
-    
-    - EXERCISES.each do |e|
-      %tr
-        %td 
-          %input(type="checkbox")
-        %td= e.capitalize
-        %td
-        %td
-%br
-
 %form(action="/muscle_tracker" method="post")
-  %label(for="") How are you feeling today?
-  %input(type="checkbox" name="cb[one]" id ="one") one
-  %input(type="checkbox" name="cb[two]" id ="two") two
-  %input(type="checkbox" name="cb[three]" id ="three") three
-  %input(type="submit" value="Submit!")
-%br
+  #dashboard
+    %table
+      %th
+        %input(type="reset" value="clear")
+      %th
+        %h2 Exercise
+      %th
+        %h2 Last Day Worked
+      %th
+        %h2 Days Since Worked
+      
+      - EXERCISES.each do |e|
+        %tr
+          %td 
+            %input(type="checkbox" name="cb[#{e}]")
+          %td= e.capitalize
+          %td
+          %td
+  %br
 
-#calendar
-  %table
-    - events.each do |e|
-      %tr
-        %td
-          %h2= e[0]
-        %td
-          %p= e[1]
-        %td
-          %input(type="submit" value="update")
+  #calendar
+    %table
+      - events.each do |e|
+        - day = e[0]
+        - items = e[1]
+        %tr
+          %td
+            %h2= pretty_date(date_to_datestamp(day))
+          %td
+            %p= items
+          %td
+            %input(type="submit" name="cb[#{day}]" value="update")
+          %td
+            %input(type="submit" name="cb[#{day}]" value="clear row")

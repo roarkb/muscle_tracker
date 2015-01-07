@@ -29,18 +29,29 @@ end
 
 get "/muscle_tracker" do
   DB.append_latest_dates
-  
+ 
   events = []
   DB.select_all.sort.reverse.each do |e|
-    events.push([ pretty_date(date_to_datestamp(e[0])), e[1].join(", ") ])
+    events.push([ e[0], e[1].join(", ") ])
   end
   
   haml :main, :format => :xhtml, :locals => { :events => events }
 end
 
 post '/muscle_tracker' do
-  cb = params[:cb]
-  p cb.keys
-  #DB.update_value_array("2015-01-05", cb)
+  h = params[:cb]
+  
+  if h.length == 1
+    a = h.to_a.flatten
+    
+    if a[1] == "clear row"
+      DB.update_value_array(a[0], [])
+    end
+  
+  elsif h.length > 1
+    a = h.keys
+    DB.update_value_array(a.pop, a)
+  end
+  
   redirect to('/muscle_tracker')
 end

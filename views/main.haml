@@ -32,4 +32,4 @@
           %td
             %input(type="submit" name="cb[#{day}]" value="update")
           %td
-            %input(type="submit" name="cb[#{day}]" value="clear row")
+            %input(type="submit" name="cb[#{day}]" value="clear row" class="clear_row" onclick='if(!confirm("are you sure?")){return false;}')

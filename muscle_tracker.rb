@@ -5,6 +5,7 @@ require 'sinatra'
 require 'haml'
 require 'yaml/dbm'
 require 'date'
+require 'fileutils'
 
 require './database'
 
@@ -12,7 +13,9 @@ EXERCISES = %w[ chest back abs shoulders deltoids biceps triceps legs cardio ]
 START_DATE = Date.new(2014, 12, 12)
 END_DATE = Date.today 
 TITLE = "Muscle Tracker"
-DB = Database.new("muscle")
+DB_NAME = "muscle"
+DB_BACKUPS_AMOUNT = 10
+DB_BACKUPS_DIR = "backups"
 
 def pretty_date(date) # => Thu, Jan 01 2015
   date.strftime("%a, %b %d %Y")
@@ -23,35 +26,62 @@ def date_to_datestamp(date)
   Date.new(d[0].to_i, d[1].to_i, d[2].to_i)
 end
 
+# TODO: keep n latest backups
+def backup_database
+  FileUtils.mkdir_p(DB_BACKUPS_DIR)
+  FileUtils.cp("#{DB_NAME}.db", "#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{Date.today}")
+end
+
+db = Database.new(DB_NAME)
+
 get '/' do
   redirect to('/muscle_tracker')
 end
 
 get "/muscle_tracker" do
-  DB.append_latest_dates
+  db.append_latest_dates
+  all = db.select_all.sort.reverse
  
-  events = []
-  DB.select_all.sort.reverse.each do |e|
-    events.push([ e[0], e[1].join(", ") ])
+  cal_data = []
+  all.each do |e|
+    cal_data.push([ e[0], e[1].join(", ") ])
   end
-  
-  haml :main, :format => :xhtml, :locals => { :events => events }
+
+  dash_data = {}
+  EXERCISES.each do |exercise|
+    all.each do |event|
+      date = event[0]
+      items = event[1]
+
+      if items.include?(exercise)
+        dash_data[exercise] = [ date, (Date.today - date_to_datestamp(date)).to_i ]
+        break
+      end
+    end
+  end
+
+  haml :main, :format => :xhtml, :locals => { :cal_data => cal_data, :dash_data => dash_data }
 end
 
-post '/muscle_tracker' do
+post "/update_row" do
   h = params[:cb]
   
   if h.length == 1
     a = h.to_a.flatten
     
     if a[1] == "clear row"
-      DB.update_value_array(a[0], [])
+      db.update_value_array(a[0], [])
     end
   
   elsif h.length > 1
     a = h.keys
-    DB.update_value_array(a.pop, a)
+    db.update_value_array(a.pop, a)
   end
   
+  redirect to('/muscle_tracker')
+end
+
+post "/backup" do
+  backup_database
   redirect to('/muscle_tracker')
 end

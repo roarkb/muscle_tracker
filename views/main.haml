@@ -1,4 +1,8 @@
-%form(action="/muscle_tracker" method="post")
+#backup
+  %form(action="/backup" method="post")
+    %input(type="submit" value="backup database")
+
+%form(action="/update_row" method="post")
   #dashboard
     %table
       %th
@@ -6,22 +10,22 @@
       %th
         %h2 Exercise
       %th
-        %h2 Last Day Worked
+        %h2 Days Since
       %th
-        %h2 Days Since Worked
+        %h2 Date
       
       - EXERCISES.each do |e|
         %tr
           %td 
             %input(type="checkbox" name="cb[#{e}]")
           %td= e.capitalize
-          %td
-          %td
+          %td= dash_data[e][1]
+          %td= pretty_date(date_to_datestamp(dash_data[e][0]))
   %br
 
   #calendar
     %table
-      - events.each do |e|
+      - cal_data.each do |e|
         - day = e[0]
         - items = e[1]
         %tr
@@ -33,3 +37,4 @@
             %input(type="submit" name="cb[#{day}]" value="update")
           %td
             %input(type="submit" name="cb[#{day}]" value="clear row" class="clear_row" onclick='if(!confirm("are you sure?")){return false;}')
+

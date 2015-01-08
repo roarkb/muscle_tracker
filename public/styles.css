@@ -25,6 +25,10 @@ h1 {
   font-size: 150%;
 }
 
+#backup {
+  float: right
+}
+
 #calendar p {
   color: #B01616; /*red wine*/
 }

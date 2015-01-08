@@ -26,10 +26,23 @@ def date_to_datestamp(date)
   Date.new(d[0].to_i, d[1].to_i, d[2].to_i)
 end
 
-# TODO: keep n latest backups
 def backup_database
   FileUtils.mkdir_p(DB_BACKUPS_DIR)
   FileUtils.cp("#{DB_NAME}.db", "#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{Date.today}")
+  
+  all_files = Dir["#{DB_BACKUPS_DIR}/*"]
+  
+  if all_files.length > DB_BACKUPS_AMOUNT
+    file_dates = []
+    
+    all_files.each do |file|
+      file_dates.push(file.gsub("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_", ""))
+    end
+   
+    file_dates.sort.reverse.pop(all_files.length - DB_BACKUPS_AMOUNT).each do |date|
+      FileUtils.remove("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{date}")
+    end
+  end
 end
 
 db = Database.new(DB_NAME)

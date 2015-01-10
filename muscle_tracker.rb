@@ -33,32 +33,6 @@ def log(method, message)
   Log.entry("#{File.basename(__FILE__).gsub(".rb", "")}:#{method} - #{message}")
 end
 
-def backup_database
-  FileUtils.mkdir_p(DB_BACKUPS_DIR)
-  new_file = "#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{Date.today}"
-  FileUtils.cp("#{DB_NAME}.db", new_file)
-  log(__method__, new_file)
-  all_files = Dir["#{DB_BACKUPS_DIR}/*"]
-  
-  if all_files.length > DB_BACKUPS_AMOUNT
-    file_dates = []
-    
-    all_files.each do |file|
-      file_dates.push(file.gsub("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_", ""))
-    end
-   
-    files_to_remove = file_dates.sort.reverse.pop(all_files.length - DB_BACKUPS_AMOUNT)
-    
-    if files_to_remove.length > 0
-      files_to_remove.each do |date|
-        FileUtils.remove("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{date}")
-      end
-  
-      log(__method__, "removed file(s) with date(s): #{files_to_remove}")
-    end
-  end
-end
-
 db = Database.new(DB_NAME)
 
 get '/' do
@@ -105,10 +79,34 @@ post "/update_row" do
     db.update_value_array(a.pop, a)
   end
   
+  log(__method__, h)
   redirect to('/muscle_tracker')
 end
 
 post "/backup" do
-  backup_database
+  FileUtils.mkdir_p(DB_BACKUPS_DIR)
+  new_file = "#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{Date.today}"
+  FileUtils.cp("#{DB_NAME}.db", new_file)
+  log(__method__, new_file)
+  all_files = Dir["#{DB_BACKUPS_DIR}/*"]
+  
+  if all_files.length > DB_BACKUPS_AMOUNT
+    file_dates = []
+    
+    all_files.each do |file|
+      file_dates.push(file.gsub("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_", ""))
+    end
+   
+    files_to_remove = file_dates.sort.reverse.pop(all_files.length - DB_BACKUPS_AMOUNT)
+    
+    if files_to_remove.length > 0
+      files_to_remove.each do |date|
+        FileUtils.remove("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{date}")
+      end
+  
+      log(__method__, "removed file(s) with date(s): #{files_to_remove}")
+    end
+  end
+  
   redirect to('/muscle_tracker')
 end

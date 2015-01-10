@@ -47,8 +47,14 @@ def backup_database
       file_dates.push(file.gsub("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_", ""))
     end
    
-    file_dates.sort.reverse.pop(all_files.length - DB_BACKUPS_AMOUNT).each do |date|
-      FileUtils.remove("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{date}")
+    files_to_remove = file_dates.sort.reverse.pop(all_files.length - DB_BACKUPS_AMOUNT)
+    
+    if files_to_remove.length > 0
+      files_to_remove.each do |date|
+        FileUtils.remove("#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{date}")
+      end
+  
+      log(__method__, "removed file(s) with date(s): #{files_to_remove}")
     end
   end
 end

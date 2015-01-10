@@ -28,10 +28,16 @@ def date_to_datestamp(date)
   Date.new(d[0].to_i, d[1].to_i, d[2].to_i)
 end
 
+# log message wrapper
+def log(method, message)
+  Log.entry("#{File.basename(__FILE__).gsub(".rb", "")}:#{method} - #{message}")
+end
+
 def backup_database
   FileUtils.mkdir_p(DB_BACKUPS_DIR)
-  FileUtils.cp("#{DB_NAME}.db", "#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{Date.today}")
-  
+  new_file = "#{DB_BACKUPS_DIR}/#{DB_NAME}.db.bak_#{Date.today}"
+  FileUtils.cp("#{DB_NAME}.db", new_file)
+  log(__method__, new_file)
   all_files = Dir["#{DB_BACKUPS_DIR}/*"]
   
   if all_files.length > DB_BACKUPS_AMOUNT

@@ -43,10 +43,11 @@ class Database
         new_list.each do |e|
           db[e] = []
         end
+      
+        log(__method__, new_list)
       end
     end
 
-    log(__method__, "test log message")
   end
 
   # update value of existing record in db
@@ -54,6 +55,7 @@ class Database
     query do |db|
       if db.include?(key)
         db[key] = array
+        log(__method__, "#{key}: #{array}")
       else raise "no such record \"#{key}\" in database"
       end
     end

@@ -16,6 +16,7 @@ TITLE = "Muscle Tracker"
 DB_NAME = "muscle"
 DB_BACKUPS_AMOUNT = 10
 DB_BACKUPS_DIR = "backups"
+LOG_FILE_NAME = "app"
 
 def pretty_date(date) # => Thu, Jan 01 2015
   date.strftime("%a, %b %d %Y")

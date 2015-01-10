@@ -5,3 +5,4 @@ Gemfile.lock
 test.rb
 test*.rb
 backups/*
+*.log

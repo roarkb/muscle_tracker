@@ -55,7 +55,7 @@ class Database
     query do |db|
       if db.include?(key)
         db[key] = array
-        log(__method__, "#{key}: #{array}")
+        log(__method__, "#{key}:#{array}")
       else raise "no such record \"#{key}\" in database"
       end
     end

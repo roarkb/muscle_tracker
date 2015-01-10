@@ -10,4 +10,5 @@ class Logger
     f.write(Time.now.strftime("%Y-%m-%d %H:%M:%S - ") + dialog + "\n")
     f.close
   end
+
 end

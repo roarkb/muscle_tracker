@@ -1,9 +1,13 @@
 #!/usr/bin/env ruby
 
+require './log'
+
 class Database
   def initialize(database_name)
     @database_name = database_name
   end
+
+  extend Log
 
   private
   # wrapper method for all db opperations
@@ -11,6 +15,11 @@ class Database
     db = YAML::DBM.open(@database_name)
     yield(db)
     db.close
+  end
+  
+  # log message wrapper
+  def log(method, message)
+    Log.entry("#{self.class}:#{method} - #{message}")
   end
 
   public
@@ -36,6 +45,8 @@ class Database
         end
       end
     end
+
+    log(__method__, "test log message")
   end
 
   # update value of existing record in db

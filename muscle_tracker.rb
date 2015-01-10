@@ -7,8 +7,6 @@ require 'yaml/dbm'
 require 'date'
 require 'fileutils'
 
-require './database'
-
 EXERCISES = %w[ chest back abs shoulders deltoids biceps triceps legs cardio ]
 START_DATE = Date.new(2014, 12, 12)
 END_DATE = Date.today 
@@ -17,6 +15,9 @@ DB_NAME = "muscle"
 DB_BACKUPS_AMOUNT = 10
 DB_BACKUPS_DIR = "backups"
 LOG_FILE_NAME = "app"
+
+require './database'
+require './log'
 
 def pretty_date(date) # => Thu, Jan 01 2015
   date.strftime("%a, %b %d %Y")

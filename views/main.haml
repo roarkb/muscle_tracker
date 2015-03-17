@@ -2,7 +2,7 @@
   %form(action="/backup" method="post")
     %input(class="button" type="submit" value="backup database")
 
-%form(action="/update_row" method="post")
+%form(action="/update-row" method="post")
   #dashboard
     %table
       %th
@@ -15,17 +15,26 @@
         %h2 Date
       
       - EXERCISES.each do |e|
+        / if last exercised falls in hidden first day
+        - if dash_data[e][0] == cal_data.last.first
+          - days_since = "?"
+          - date = "never"
+        - else
+          - days_since = dash_data[e][1]
+          - date = pretty_date(date_to_datestamp(dash_data[e][0]))
+
         %tr
           %td 
             %input(type="checkbox" name="cb[#{e}]")
           %td= e.capitalize
-          %td= dash_data[e][1]
-          %td= pretty_date(date_to_datestamp(dash_data[e][0]))
+          %td= days_since
+          %td= date
   %br
 
   #calendar
     %table
-      - cal_data.each do |e|
+      / hide day before FIRST_DATE
+      - cal_data[0..-2].each do |e|
         - day = e[0]
         - items = e[1]
         %tr

@@ -10,7 +10,7 @@ require 'yaml/dbm'
 require 'date'
 require 'fileutils'
 
-EXERCISES = %w[ chest triceps traps shoulders deltoids biceps back legs abs cardio ]
+EXERCISES = %w[ chest triceps traps shoulders deltoids biceps back low_back legs abs cardio ]
 START_DATE = Date.new(2015, 3, 11) # YYYY, M, D
 END_DATE = Date.today 
 TITLE = "Muscle Tracker"
